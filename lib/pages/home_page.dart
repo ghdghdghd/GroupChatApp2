@@ -127,13 +127,13 @@ class _HomePageState extends State<HomePage> {
 
 
   void _popupDialog(BuildContext context) {
-    Widget cancelButton = FlatButton(
+    Widget cancelButton = TextButton(
       child: Text("Cancel"),
       onPressed:  () {
         Navigator.of(context).pop();
       },
     );
-    Widget createButton = FlatButton(
+    Widget createButton = TextButton(
       child: Text("Create"),
       onPressed:  () async {
         if(_groupName != null) {

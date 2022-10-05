@@ -3,6 +3,10 @@ import 'package:group_chat_app/helper/helper_functions.dart';
 import 'package:group_chat_app/models/user.dart';
 import 'package:group_chat_app/services/database_service.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -28,14 +32,19 @@ class AuthService {
 
   // register with email and password
   Future registerWithEmailAndPassword(String fullName, String email, String password) async {
+    print("12341234123412341243");
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      print("4444444444445444444");
+      print(result);
       FirebaseUser user = result.user;
+      print("6666666666666666");
 
       // Create a new document for the user with uid
       await DatabaseService(uid: user.uid).updateUserData(fullName, email, password);
       return _userFromFirebaseUser(user);
     } catch(e) {
+      print("걍 에러@!!!!");
       print(e.toString());
       return null;
     }

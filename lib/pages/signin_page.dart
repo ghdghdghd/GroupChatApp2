@@ -8,6 +8,10 @@ import 'package:group_chat_app/services/database_service.dart';
 import 'package:group_chat_app/shared/constants.dart';
 import 'package:group_chat_app/shared/loading.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+
 class SignInPage extends StatefulWidget {
   final Function toggleView;
   SignInPage({this.toggleView});
@@ -27,6 +31,8 @@ class _SignInPageState extends State<SignInPage> {
   String error = '';
 
   _onSignIn() async {
+    print("11111111111111111111111111");
+    print(_formKey.currentState.validate());
     if (_formKey.currentState.validate()) {
       setState(() {
         _isLoading = true;
@@ -120,10 +126,10 @@ class _SignInPageState extends State<SignInPage> {
                   SizedBox(
                     width: double.infinity,
                     height: 50.0,
-                    child: RaisedButton(
-                      elevation: 0.0,
-                      color: Colors.blue,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+                    child: ElevatedButton(
+                      // elevation: 0.0,
+                      // color: Colors.blue,
+                      // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
                       child: Text('Sign In', style: TextStyle(color: Colors.white, fontSize: 16.0)),
                       onPressed: () {
                         _onSignIn();

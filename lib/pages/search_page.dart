@@ -58,7 +58,8 @@ class _SearchPageState extends State<SearchPage> {
 
  
   void _showScaffold(String message) {
-    _scaffoldKey.currentState.showSnackBar(
+    // _scaffoldKey.currentState.showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Colors.blueAccent,
         duration: Duration(milliseconds: 1500),

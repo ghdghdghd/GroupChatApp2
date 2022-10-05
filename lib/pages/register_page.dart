@@ -6,6 +6,9 @@ import 'package:group_chat_app/services/auth_service.dart';
 import 'package:group_chat_app/shared/constants.dart';
 import 'package:group_chat_app/shared/loading.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 class RegisterPage extends StatefulWidget {
   final Function toggleView;
   RegisterPage({this.toggleView});
@@ -33,6 +36,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
       await _auth.registerWithEmailAndPassword(fullName, email, password).then((result) async {
         if (result != null) {
+          print("333333333333333");
+          print(result);
           await HelperFunctions.saveUserLoggedInSharedPreference(true);
           await HelperFunctions.saveUserEmailSharedPreference(email);
           await HelperFunctions.saveUserNameSharedPreference(fullName);
@@ -51,6 +56,8 @@ class _RegisterPageState extends State<RegisterPage> {
           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
         }
         else {
+          print("2222222222222222");
+          print(result);
           setState(() {
             error = 'Error while registering the user!';
             _isLoading = false;
@@ -87,7 +94,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     decoration: textInputDecoration.copyWith(labelText: 'Full Name'),
                     onChanged: (val) {
                       setState(() {
-                        fullName = val;
+                        fullName =  val;
                       });
                     },
                   ),
@@ -126,10 +133,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   SizedBox(
                     width: double.infinity,
                     height: 50.0,
-                    child: RaisedButton(
-                      elevation: 0.0,
-                      color: Colors.blue,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+                    child: ElevatedButton(
+                      // elevation: 0.0,
+                      // color: Colors.blue,
+                      // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
                       child: Text('Register', style: TextStyle(color: Colors.white, fontSize: 16.0)),
                       onPressed: () {
                         _onRegister();
