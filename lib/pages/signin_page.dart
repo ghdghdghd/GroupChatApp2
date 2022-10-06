@@ -31,14 +31,16 @@ class _SignInPageState extends State<SignInPage> {
   String error = '';
 
   _onSignIn() async {
-    print("11111111111111111111111111");
+    print("로그인 클릭시 동작 하는 함수 _onSignIn");
     print(_formKey.currentState.validate());
     if (_formKey.currentState.validate()) {
       setState(() {
         _isLoading = true;
       });
 
-      await _auth.signInWithEmailAndPassword(email, password).then((result) async {
+      await _auth.signInWithEmailAndPassword(email, password).then((result) async {//이메일 패쓰워드검증
+        print("result 검증");
+        print(result);
         if (result != null) {
           QuerySnapshot userInfoSnapshot = await DatabaseService().getUserData(email);
 

@@ -5,6 +5,7 @@ import 'package:group_chat_app/pages/home_page.dart';
 import 'package:group_chat_app/services/auth_service.dart';
 import 'package:group_chat_app/shared/constants.dart';
 import 'package:group_chat_app/shared/loading.dart';
+import 'package:geolocator/geolocator.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -29,6 +30,11 @@ class _RegisterPageState extends State<RegisterPage> {
   String error = '';
 
   _onRegister() async {
+    var gps = await getCurrentLocation();
+    List<Placemark> mCityInfo = await placemarkFromCoordinates(gps.latitude, gps.longitude); //좌표값으로 도시정보 가져오기
+    var mCityArea = mCityInfo[0].administrativeArea.toString();                              //도시정보주에 administrativeArea값만 가져오기
+
+
     if (_formKey.currentState.validate()) {
       setState(() {
         _isLoading = true;
@@ -36,7 +42,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
       await _auth.registerWithEmailAndPassword(fullName, email, password).then((result) async {
         if (result != null) {
-          print("333333333333333");
+          print("계정가입 함수 _onRegister");
           print(result);
           await HelperFunctions.saveUserLoggedInSharedPreference(true);
           await HelperFunctions.saveUserEmailSharedPreference(email);
@@ -56,7 +62,7 @@ class _RegisterPageState extends State<RegisterPage> {
           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
         }
         else {
-          print("2222222222222222");
+          print("계정가입 함수 _onRegister 에러");
           print(result);
           setState(() {
             error = 'Error while registering the user!';

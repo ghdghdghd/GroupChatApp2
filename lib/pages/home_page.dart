@@ -94,7 +94,9 @@ class _HomePageState extends State<HomePage> {
 
   // functions
   _getUserAuthAndJoinedGroups() async {
-    _user = await FirebaseAuth.instance.currentUser();
+    _user = await FirebaseAuth.instance.currentUser(); //유저정보
+    print("띠링! _user");
+    print(_user);
     await HelperFunctions.getUserNameSharedPreference().then((value) {
       setState(() {
         _userName = value;
@@ -137,7 +139,7 @@ class _HomePageState extends State<HomePage> {
       child: Text("Create"),
       onPressed:  () async {
         if(_groupName != null) {
-          await HelperFunctions.getUserNameSharedPreference().then((val) {
+          await HelperFunctions.getUserNameSharedPreference().then((val) {  //이전 내용 불러오기
             DatabaseService(uid: _user.uid).createGroup(val, _groupName);
           });
           Navigator.of(context).pop();

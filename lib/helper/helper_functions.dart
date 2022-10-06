@@ -32,6 +32,8 @@ class HelperFunctions{
 
   static Future<String> getUserNameSharedPreference() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
+    print("1111111111");
+    print(sharedPreferenceUserNameKey);
     return await preferences.getString(sharedPreferenceUserNameKey);
   }
 
