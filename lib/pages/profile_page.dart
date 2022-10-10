@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:group_chat_app/pages/authenticate_page.dart';
 import 'package:group_chat_app/pages/home_page.dart';
 import 'package:group_chat_app/services/auth_service.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class ProfilePage extends StatelessWidget {
 

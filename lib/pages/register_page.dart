@@ -6,7 +6,7 @@ import 'package:group_chat_app/services/auth_service.dart';
 import 'package:group_chat_app/shared/constants.dart';
 import 'package:group_chat_app/shared/loading.dart';
 import 'package:geolocator/geolocator.dart';
-
+import 'package:geocoding/geocoding.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -29,9 +29,18 @@ class _RegisterPageState extends State<RegisterPage> {
   String password = '';
   String error = '';
 
+  Future<Position> getCurrentLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    return position;
+  }
+
   _onRegister() async {
     var gps = await getCurrentLocation();
     List<Placemark> mCityInfo = await placemarkFromCoordinates(gps.latitude, gps.longitude); //좌표값으로 도시정보 가져오기
+    print("위치정보");
+    print(mCityInfo);
     var mCityArea = mCityInfo[0].administrativeArea.toString();                              //도시정보주에 administrativeArea값만 가져오기
 
 
@@ -40,7 +49,7 @@ class _RegisterPageState extends State<RegisterPage> {
         _isLoading = true;
       });
 
-      await _auth.registerWithEmailAndPassword(fullName, email, password).then((result) async {
+      await _auth.registerWithEmailAndPassword(fullName, email, password, mCityArea).then((result) async {
         if (result != null) {
           print("계정가입 함수 _onRegister");
           print(result);

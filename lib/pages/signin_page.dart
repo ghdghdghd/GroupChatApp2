@@ -7,6 +7,8 @@ import 'package:group_chat_app/services/auth_service.dart';
 import 'package:group_chat_app/services/database_service.dart';
 import 'package:group_chat_app/shared/constants.dart';
 import 'package:group_chat_app/shared/loading.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,7 +22,9 @@ class SignInPage extends StatefulWidget {
   _SignInPageState createState() => _SignInPageState();
 }
 
+
 class _SignInPageState extends State<SignInPage> {
+
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
@@ -30,15 +34,27 @@ class _SignInPageState extends State<SignInPage> {
   String password = '';
   String error = '';
 
+  Future<Position> getCurrentLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    return position;
+  }
   _onSignIn() async {
     print("로그인 클릭시 동작 하는 함수 _onSignIn");
+    var gps = await getCurrentLocation();
+    List<Placemark> mCityInfo = await placemarkFromCoordinates(gps.latitude, gps.longitude); //좌표값으로 도시정보 가져오기
+    print("위치정보");
+    print(mCityInfo);
+    var mCityArea = mCityInfo[0].administrativeArea.toString();
+
     print(_formKey.currentState.validate());
     if (_formKey.currentState.validate()) {
       setState(() {
         _isLoading = true;
       });
 
-      await _auth.signInWithEmailAndPassword(email, password).then((result) async {//이메일 패쓰워드검증
+      await _auth.signInWithEmailAndPassword(email, password, mCityArea).then((result) async {//이메일 패쓰워드검증
         print("result 검증");
         print(result);
         if (result != null) {
@@ -47,7 +63,7 @@ class _SignInPageState extends State<SignInPage> {
           await HelperFunctions.saveUserLoggedInSharedPreference(true);
           await HelperFunctions.saveUserEmailSharedPreference(email);
           await HelperFunctions.saveUserNameSharedPreference(
-            userInfoSnapshot.documents[0].data['fullName']
+            userInfoSnapshot.docs[0].get('fullName') // 검증요 data['fullName']
           );
 
           print("Signed In");

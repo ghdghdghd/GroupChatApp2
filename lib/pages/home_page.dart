@@ -9,6 +9,7 @@ import 'package:group_chat_app/pages/search_page.dart';
 import 'package:group_chat_app/services/auth_service.dart';
 import 'package:group_chat_app/services/database_service.dart';
 import 'package:group_chat_app/widgets/group_tile.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class _HomePageState extends State<HomePage> {
 
   // data
   final AuthService _auth = AuthService();
-  FirebaseUser _user;
+  User _user;
   String _groupName;
   String _userName = '';
   String _email = '';
@@ -94,7 +95,7 @@ class _HomePageState extends State<HomePage> {
 
   // functions
   _getUserAuthAndJoinedGroups() async {
-    _user = await FirebaseAuth.instance.currentUser(); //유저정보
+    _user = await FirebaseAuth.instance.currentUser; //유저정보
     print("띠링! _user");
     print(_user);
     await HelperFunctions.getUserNameSharedPreference().then((value) {

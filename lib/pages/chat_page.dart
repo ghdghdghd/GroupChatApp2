@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:group_chat_app/services/database_service.dart';
 import 'package:group_chat_app/widgets/message_tile.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class ChatPage extends StatefulWidget {
 
@@ -29,12 +30,12 @@ class _ChatPageState extends State<ChatPage> {
       stream: _chats,
       builder: (context, snapshot){
         return snapshot.hasData ?  ListView.builder(
-          itemCount: snapshot.data.documents.length,
+          itemCount: snapshot.data.docs.length,
           itemBuilder: (context, index){
             return MessageTile(
-              message: snapshot.data.documents[index].data["message"],
-              sender: snapshot.data.documents[index].data["sender"],
-              sentByMe: widget.userName == snapshot.data.documents[index].data["sender"],
+              message: snapshot.data.docs[index].data()["message"],
+              sender: snapshot.data.docs[index].data()["sender"],
+              sentByMe: widget.userName == snapshot.data.docs[index].data()["sender"],
             );
           }
         )

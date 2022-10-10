@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:group_chat_app/helper/helper_functions.dart';
 import 'package:group_chat_app/pages/chat_page.dart';
 import 'package:group_chat_app/services/database_service.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class _SearchPageState extends State<SearchPage> {
   bool hasUserSearched = false;
   bool _isJoined = false;
   String _userName = '';
-  FirebaseUser _user;
+  User _user;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
 
@@ -36,7 +37,7 @@ class _SearchPageState extends State<SearchPage> {
     await HelperFunctions.getUserNameSharedPreference().then((value) {
       _userName = value;
     });
-    _user = await FirebaseAuth.instance.currentUser();
+    _user = await FirebaseAuth.instance.currentUser;
   }
 
 
@@ -81,13 +82,13 @@ class _SearchPageState extends State<SearchPage> {
   Widget groupList() {
     return hasUserSearched ? ListView.builder(
       shrinkWrap: true,
-      itemCount: searchResultSnapshot.documents.length,
+      itemCount: searchResultSnapshot.docs.length,
       itemBuilder: (context, index) {
         return groupTile(
           _userName,
-          searchResultSnapshot.documents[index].data["groupId"],
-          searchResultSnapshot.documents[index].data["groupName"],
-          searchResultSnapshot.documents[index].data["admin"],
+          searchResultSnapshot.docs[index].get("groupId"), //검증요 data["groupId"],
+          searchResultSnapshot.docs[index].get( "groupName"), //검증요 data["groupName"],
+          searchResultSnapshot.docs[index].get("admin")  //검증요 data["admin"],
         );
       }
     )

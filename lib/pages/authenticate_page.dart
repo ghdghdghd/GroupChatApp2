@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:group_chat_app/pages/register_page.dart';
 import 'package:group_chat_app/pages/signin_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class AuthenticatePage extends StatefulWidget {
   @override
